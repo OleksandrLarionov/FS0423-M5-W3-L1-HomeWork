@@ -10,6 +10,7 @@ import larionovoleksanr.exam.services.EmployeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
@@ -26,6 +27,7 @@ public class DeviceController {
     MailGunSender mailGunSender;
 
     @GetMapping
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Page<Dispositivo> getDevices(@RequestParam(defaultValue = "0") int page,
                                         @RequestParam(defaultValue = "0") int size,
                                         @RequestParam(defaultValue = "id") String orderBy) {
@@ -34,6 +36,7 @@ public class DeviceController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public Dispositivo saveDevice(@RequestBody @Validated NewDeviceDTO payload, BindingResult validation) {
         if (validation.hasErrors()) {
             throw new BadRequestException(validation.getAllErrors());
@@ -59,6 +62,7 @@ public class DeviceController {
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public NewDeviceResponseDTO findByIdAndUpdate(@PathVariable Long id,
                                                   @RequestBody @Validated NewDeviceDTO body, BindingResult validation) {
         if (validation.hasErrors()) {
@@ -66,10 +70,11 @@ public class DeviceController {
         }
         Dispositivo deviceUptede = new Dispositivo();
         deviceUptede.setDeviceType(body.deviceType());
-//        non sono sicuro se aggiungere anche lo stateOfDevice nel paylod e anche qui.
+//
 
         if(body.idEmployee() != null){
             deviceUptede.setEmployee(employeeService.findById(body.idEmployee()));
+            deviceUptede.setStateOfDevice("ASSEGNATO");
             mailGunSender.sendRegistrationMail(deviceUptede.getEmployee().getEmail(), deviceUptede);
         }
         deviceService.findByIdAndUpdate(id, deviceUptede);
@@ -77,6 +82,7 @@ public class DeviceController {
     }
 
     @DeleteMapping("/{id}")
+    @PreAuthorize("hasAuthority('ADMIN')")
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void findByIdAndDelete(@PathVariable Long id) {
         deviceService.delete(id);

@@ -22,7 +22,7 @@ import java.util.List;
 @AllArgsConstructor
 @Table(name = "employee")
 @Entity
-@JsonIgnoreProperties({"password", "authorities", "accountNonExpired", "enabled", "accountNonLocked", "credentialsNonExpired", "username"})
+@JsonIgnoreProperties({"password", "authorities", "accountNonExpired", "enabled", "accountNonLocked", "credentialsNonExpired", "username","role","deviceList"})
 public class Dipendente implements UserDetails {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

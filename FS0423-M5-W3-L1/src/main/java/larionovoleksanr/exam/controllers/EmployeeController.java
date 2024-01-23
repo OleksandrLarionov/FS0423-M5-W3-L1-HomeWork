@@ -29,13 +29,13 @@ public class EmployeeController {
     private AuthService authService;
 
     @GetMapping("/me")
-    public UserDetails getProfile(@AuthenticationPrincipal Dipendente currentUser){
-        return currentUser;
+    public Dipendente getProfile(@AuthenticationPrincipal Dipendente currentEmployee){
+        return currentEmployee;
     }
 
     @GetMapping
     @PreAuthorize("hasAuthority('ADMIN')")
-    public Page<Dipendente> getAuthor(@RequestParam(defaultValue = "0") int page,
+    public Page<Dipendente> getEmployee(@RequestParam(defaultValue = "0") int page,
                                       @RequestParam(defaultValue = "10") int size,
                                       @RequestParam(defaultValue = "id") String orderBy) {
         return employeeService.getEmployees(page, size, orderBy);
