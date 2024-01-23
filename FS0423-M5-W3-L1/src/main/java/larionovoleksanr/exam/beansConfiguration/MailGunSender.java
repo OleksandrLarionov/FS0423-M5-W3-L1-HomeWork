@@ -31,8 +31,8 @@ public class MailGunSender {
                 .queryString("from", "Company Epicode" + this.myEmail)
                 .queryString("to", recipient)
                 .queryString("subject", "Consegna del Nuovo Dispositivo")
-                .queryString("text", "Siamo lieti di informarti che il tuo nuovo dispositivo è stato spedito con successo! Di seguito trovi i dettagli della spedizione:" +
-                        "\n Tipo di Dispositivo" + device.getDeviceType() +
+                .queryString("text", "Siamo lieti di informarti che il tuo nuovo dispositivo è stato spedito con successo! Di seguito trovi i dettagli della spedizione: " +
+                        "\n Tipo di Dispositivo: " + device.getDeviceType() +
                         "\n" + "\n" + "\n" + "Se hai domande o dubbi, non esitare a contattare il nostro team di supporto." +
                         "\n Grazie per la tua collaborazione!" +
                         "\n Cordiali Saluti," +

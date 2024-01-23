@@ -34,7 +34,7 @@ public class DeviceController {
 
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
-    public Dispositivo saveBlogpost(@RequestBody @Validated NewDeviceDTO payload, BindingResult validation) {
+    public Dispositivo saveDevice(@RequestBody @Validated NewDeviceDTO payload, BindingResult validation) {
         if (validation.hasErrors()) {
             throw new BadRequestException(validation.getAllErrors());
         }

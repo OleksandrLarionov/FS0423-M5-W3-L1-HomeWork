@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 
+import java.nio.file.AccessDeniedException;
 import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
@@ -32,20 +33,25 @@ public class ExceptionsHandler {
 	@ExceptionHandler(UnauthorizedException.class)
 	@ResponseStatus(HttpStatus.UNAUTHORIZED) // 401
 	public ErrorsDTO handleUnauthorized(UnauthorizedException e) {
-		return new ErrorsDTO(e.getMessage(), LocalDateTime.now());
+		return new ErrorsDTO(e.getMessage(),newDateAndHour());
+	}
+	@ExceptionHandler(AccessDeniedException.class)
+	@ResponseStatus(HttpStatus.FORBIDDEN)
+	public ErrorsDTO accessDenied(AccessDeniedException ex){
+		return new ErrorsDTO("Il tuo ruolo non permette l'accesso", newDateAndHour());
 	}
 
 	@ExceptionHandler(NotFoundException.class)
 	@ResponseStatus(HttpStatus.NOT_FOUND)
-	public ErrorsPayload handleNotFound(NotFoundException ex) {
-		return new ErrorsPayload(ex.getMessage(), LocalDateTime.now());
+	public ErrorsDTO handleNotFound(NotFoundException ex) {
+		return new ErrorsDTO(ex.getMessage(),newDateAndHour());
 	}
 
 	@ExceptionHandler(Exception.class)
 	@ResponseStatus(HttpStatus.INTERNAL_SERVER_ERROR)
-	public ErrorsPayload handleGenericError(Exception ex) {
+	public ErrorsDTO handleGenericError(Exception ex) {
 		ex.printStackTrace();
-		return new ErrorsPayload("Un po di pazienza ci stiamo lavorando", LocalDateTime.now());
+		return new ErrorsDTO("Un po di pazienza ci stiamo lavorando", newDateAndHour());
 	}
 
 	public static String newDateAndHour(){

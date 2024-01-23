@@ -20,8 +20,6 @@ import org.springframework.web.bind.annotation.*;
 public class AuthController {
     @Autowired
     AuthService authService;
-    @Autowired
-    EmployeeService employeeService;
 
     @PostMapping("/login")
     public DipendenteLoginResponseDTO login(@RequestBody DipendenteLogInDTO body) {
@@ -38,7 +36,7 @@ public class AuthController {
             System.out.println(validation.getAllErrors());
             throw new BadRequestException("Ci sono errori nel payload!"); // L'eccezione arriverà agli error handlers tra i quali c'è quello che manderà la risposta con status code 400
         } else {
-            Dipendente newEmployee = employeeService.saveEmployee(newEmployeePayload);
+            Dipendente newEmployee = authService.saveEmployee(newEmployeePayload);
 
             return new NewEmployeeResponseDTO(newEmployee.getId());
         }

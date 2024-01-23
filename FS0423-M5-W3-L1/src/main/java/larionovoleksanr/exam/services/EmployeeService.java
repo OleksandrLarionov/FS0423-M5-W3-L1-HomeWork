@@ -3,6 +3,7 @@ package larionovoleksanr.exam.services;
 
 import com.cloudinary.Cloudinary;
 import com.cloudinary.utils.ObjectUtils;
+import larionovoleksanr.exam.Role;
 import larionovoleksanr.exam.entities.Dipendente;
 import larionovoleksanr.exam.exceptions.BadRequestException;
 import larionovoleksanr.exam.exceptions.NotFoundException;
@@ -14,6 +15,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -28,26 +30,14 @@ public class EmployeeService {
     @Autowired
     private Cloudinary cloudinaryUploader;
 
+
+
     public Page<Dipendente> getEmployees(int page, int size, String orderBy) {
         Pageable pageable = PageRequest.of(page, size, Sort.by(orderBy));
         return dipendenteDAO.findAll(pageable);
     }
 
 
-    public Dipendente saveEmployee(NewEmployeeDTO body) {
-        dipendenteDAO.findByEmail(body.email()).ifPresent(employee -> {
-            throw new BadRequestException("IS ALREADY EXIST" + employee.getEmail());
-        });
-        Random rndm = new Random();
-        Dipendente employee = new Dipendente();
-        employee.setUsername(body.name() + body.surname() + rndm.nextInt(1, 100000));
-        employee.setProfileImage("PROFILE IMAGE NOT UPLOADED YET");
-        employee.setName(body.name());
-        employee.setSurname(body.surname());
-        employee.setEmail(body.email());
-        employee.setPassword(body.password());
-        return dipendenteDAO.save(employee);
-    }
 
     public Dipendente findById(Long id) {
         return dipendenteDAO.findById(id).orElseThrow(() -> new NotFoundException(id));
