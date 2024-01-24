@@ -36,7 +36,7 @@ public class SecurityConfigurator {
         httpSecurity.sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         httpSecurity.csrf(AbstractHttpConfigurer::disable);
 
-        httpSecurity.cors(Customizer.withDefaults()); // per la configurazione dei CORS con un bean custom
+        httpSecurity.cors(Customizer.withDefaults()); //********************** per la configurazione dei CORS con un bean custom ******************
 
         // Aggiungiamo filtri custom
         httpSecurity.addFilterBefore((Filter) jwtAuthFilter, UsernamePasswordAuthenticationFilter.class);
@@ -57,7 +57,7 @@ public class SecurityConfigurator {
     CorsConfigurationSource corsConfigurationSource(){
         CorsConfiguration configuration = new CorsConfiguration();
         configuration.setAllowedOrigins(Arrays.asList("http://localhost:3000","http://www.mywonderfulfe.com"));
-        configuration.setAllowedMethods(Arrays.asList("*"));
+        configuration.setAllowedMethods(Arrays.asList("*")); //per i metodi GET POST ... exx ("GET"),("POST")
         configuration.setAllowedHeaders(Arrays.asList("*"));
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
         source.registerCorsConfiguration("/**",configuration);// registro la configurazione su tutti gli endèpoint della configurazione;
